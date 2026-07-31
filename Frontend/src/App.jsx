@@ -1,16 +1,35 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Landing Pages
+import HomeLayout from "./pages/Landing/HomeLayout";
+import Home from "./pages/Landing/Home";
+import ContactUs from "./pages/Landing/ContactUs";
+import AboutUs from "./pages/landing/AboutUs";
+import Hotel from "./pages/Landing/Hotels";
+
+// Authentication
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <div className="bg-white p-8 rounded-xl shadow-lg">
-        <h1 className="text-4xl font-bold text-blue-600">
-          Hotel Management System
-        </h1>
+    <BrowserRouter>
+      <Routes>
+        {/* Landing Page */}
+        <Route path="/" element={<HomeLayout />}>
+          <Route index element={<Home />} />
 
-        <p className="mt-4 text-gray-600">
-          React + Vite + Tailwind CSS is ready 🚀
-        </p>
-      </div>
-    </div>
+          <Route path="contactus" element={<ContactUs />} />
+
+          <Route path="aboutus" element={<AboutUs />} />
+
+          <Route path="hotels" element={<Hotel />} />
+        </Route>
+
+         {/* Authentication */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
