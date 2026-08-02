@@ -1,4 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+// common 
+
+import Profile from "./pages/auth/profile";
+import ChangePassword from "./pages/auth/changePassword";
 // Landing Pages
 import HomeLayout from "./pages/Landing/HomeLayout";
 import Home from "./pages/Landing/Home";
@@ -9,6 +13,10 @@ import Hotel from "./pages/Landing/Hotels";
 // Authentication
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
+
+// Admin
+import AdminLayout from "./pages/admin/layout";
+import AdminDashboard from "./pages/admin/adminDashboard";
 
 function App() {
   return (
@@ -25,9 +33,20 @@ function App() {
           <Route path="hotels" element={<Hotel />} />
         </Route>
 
-         {/* Authentication */}
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="Profile" element={<Profile/>} />
+          <Route path="change-password" element={<ChangePassword />} />
+        </Route>
+
+        {/* Default Routes */}
+        <Route path="*" element={<h1>404 Not Found</h1>} />
+
       </Routes>
     </BrowserRouter>
   );

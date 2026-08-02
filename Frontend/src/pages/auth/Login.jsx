@@ -38,10 +38,10 @@ function Login() {
         "http://localhost:5000/api/auth/login",
         {
           method: "POST",
+           body: JSON.stringify(formData),
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
         }
       );
 
@@ -57,9 +57,10 @@ function Login() {
       if (data.token) {
         localStorage.setItem("token", data.token);
       }
+      console.log("Login successful:", data.user);
 
       const role = data.user?.role?.toLowerCase();
-
+      console.log("User role:", role);
       if (role === "admin") {
         navigate("/admin");
       } else if (role === "hotel") {
@@ -67,7 +68,8 @@ function Login() {
       } else if (role === "customer") {
         navigate("/customer/dashboard");
       } else {
-        navigate("/");
+        // navigate("/");
+        console.error("Unknown user role:", role);
       }
     } catch (err) {
       console.error(err);
