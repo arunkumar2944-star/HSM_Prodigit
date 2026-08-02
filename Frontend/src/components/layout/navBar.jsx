@@ -38,7 +38,7 @@ function Navbar({ setIsOpen }) {
       );
   }, []);
   return (
-    <header className="sticky top-0 z-30 flex h-20 items-center justify-between bg-white px-6 shadow">
+    <header className="sticky top-0 z-30 flex h-20 items-center justify-between bg-slate-900 text-white transition-transform duration-300">
       <div className="flex items-center gap-4">
         <button
           className="text-3xl lg:hidden"
@@ -67,7 +67,7 @@ function Navbar({ setIsOpen }) {
         </div>
         <button
           onClick={() => setShowProfile(!showProfile)}
-          className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-gray-100 transition"
+          className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-slate-700 transition"
         >
           <img
             src="https://i.pravatar.cc/150?img=12"
@@ -76,11 +76,11 @@ function Navbar({ setIsOpen }) {
           />
 
           <div className="hidden md:block text-left">
-            <h4 className="font-semibold text-gray-800">
+            <h4 className="font-semibold text-white">
               Arunkumar
             </h4>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-white">
               Administrator
             </p>
           </div>
@@ -126,7 +126,7 @@ function Navbar({ setIsOpen }) {
 
               <Link
                 to="/admin/profile"
-                className="flex items-center gap-3 px-5 py-3 hover:bg-gray-100 transition"
+                className="flex items-center gap-3 px-5 py-3 hover:bg-slate-700 text-blue-500 transition"
               >
                 <FaUser className="text-blue-600" />
                 My Profile
@@ -142,16 +142,16 @@ function Navbar({ setIsOpen }) {
 
               <Link
                 to="/admin/change-password"
-                className="flex items-center gap-3 px-5 py-3 hover:bg-gray-100 transition"
+                className="flex items-center gap-3 px-5 py-3 text-orange-500 hover:bg-slate-700 transition"
               >
                 <FaLock className="text-orange-500" />
                 Change Password
               </Link>
 
-              <hr className="my-2" />
+              <hr className="my-2 text-gray-600" />
 
               <button
-                className="w-full flex items-center gap-3 px-5 py-3 hover:bg-red-50 text-red-600 transition"
+                className="w-full flex items-center gap-3 px-5 py-3 hover:bg-red-700 hover:text-red-300 text-red-800 transition"
               >
                 <FaSignOutAlt />
                 Logout

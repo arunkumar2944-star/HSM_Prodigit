@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Profile from "./pages/auth/profile";
 import ChangePassword from "./pages/auth/changePassword";
+import EditProfile from "./pages/auth/edit-profile";
 // Landing Pages
 import HomeLayout from "./pages/Landing/HomeLayout";
 import Home from "./pages/Landing/Home";
@@ -41,6 +42,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="Profile" element={<Profile/>} />
+          <Route path="edit-profile" element={<EditProfile />} />
           <Route path="change-password" element={<ChangePassword />} />
         </Route>
 
