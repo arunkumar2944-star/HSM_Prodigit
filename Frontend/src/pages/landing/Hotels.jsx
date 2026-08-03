@@ -6,6 +6,7 @@ export default class Hotels extends Component {
         return (
 <>
             <h1>Hotels page</h1>
+            
 </>
         )
     }
