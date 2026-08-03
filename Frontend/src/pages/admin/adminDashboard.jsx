@@ -1,7 +1,7 @@
 import AdminLayout from "./layout";
 import DashboardStats from "../../components/Dashboard/DashboardStats";
 
-function Dashboard() {
+function AdminDashboard() {
   return (
     <div className="space-y-8">
 
@@ -22,4 +22,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default AdminDashboard;

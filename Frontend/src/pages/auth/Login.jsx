@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { loginSuccess } from "../redux/slices/authSlice";
 import {
   FaHotel,
   FaEnvelope,
@@ -38,7 +41,7 @@ function Login() {
         "http://localhost:5000/api/auth/login",
         {
           method: "POST",
-           body: JSON.stringify(formData),
+          body: JSON.stringify(formData),
           headers: {
             "Content-Type": "application/json",
           },
@@ -55,7 +58,14 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       if (data.token) {
-        localStorage.setItem("token", data.token);
+        const dispatch = useDispatch();
+
+        dispatch(
+          loginSuccess({
+            user: data.user,
+            token: data.token,
+          })
+        );
       }
       console.log("Login successful:", data.user);
 

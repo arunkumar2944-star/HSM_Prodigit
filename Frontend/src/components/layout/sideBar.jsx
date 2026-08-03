@@ -10,16 +10,27 @@ import {
   MdLogout,
 } from "react-icons/md";
 
-const menuItems = [
-  { title: "Dashboard", icon: <MdDashboard /> },
-  { title: "Hotels", icon: <MdHotel /> },
-  { title: "Rooms", icon: <MdBedroomParent /> },
-  { title: "Bookings", icon: <MdBookOnline /> },
-  { title: "Customers", icon: <MdPeople /> },
-  { title: "Payments", icon: <MdPayments /> },
-  { title: "Reports", icon: <MdBarChart /> },
-  { title: "Settings", icon: <MdSettings /> },
-];
+let menuItems = [];
+if (localStorage.getItem("userRole") === "admin") {
+  menuItems = [
+    { title: "Dashboard", icon: <MdDashboard /> },
+    { title: "Hotels", icon: <MdHotel /> },
+    { title: "Rooms", icon: <MdBedroomParent /> },
+    { title: "Bookings", icon: <MdBookOnline /> },
+    { title: "Customers", icon: <MdPeople /> },
+    { title: "Payments", icon: <MdPayments /> },
+    { title: "Reports", icon: <MdBarChart /> },
+    { title: "Settings", icon: <MdSettings /> },
+  ];
+}
+else if (localStorage.getItem("userRole") === "Manager") {
+  menuItems = [
+    { title: "Dashboard", icon: <MdDashboard /> },
+    { title: "Hotels", icon: <MdHotel /> },
+    { title: "Rooms", icon: <MdBedroomParent /> },
+    { title: "Bookings", icon: <MdBookOnline /> },
+  ];
+}
 
 function Sidebar({ isOpen }) {
   return (
@@ -38,9 +49,8 @@ function Sidebar({ isOpen }) {
           <button
             key={index}
             className={`flex w-full items-center gap-4 px-6 py-3 text-left transition
-            hover:bg-blue-600 hover:text-white ${
-              index === 0 ? "bg-blue-600" : ""
-            }`}
+            hover:bg-blue-600 hover:text-white ${index === 0 ? "bg-blue-600" : ""
+              }`}
           >
             <span className="text-2xl">{item.icon}</span>
             <span>{item.title}</span>
