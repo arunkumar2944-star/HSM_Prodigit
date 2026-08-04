@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
-import { loginSuccess } from "../redux/slices/authSlice";
+import { login } from "../../redux/slices/authslice";
 import {
   FaHotel,
   FaEnvelope,
@@ -61,9 +60,9 @@ function Login() {
         const dispatch = useDispatch();
 
         dispatch(
-          loginSuccess({
-            user: data.user,
-            token: data.token,
+          login({
+            user: response.user,
+            token: response.token,
           })
         );
       }
