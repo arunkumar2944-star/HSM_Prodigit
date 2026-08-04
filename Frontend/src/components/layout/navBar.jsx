@@ -4,6 +4,7 @@ import {
   MdSearch,
 } from "react-icons/md";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaUserCircle,
   FaUser,
@@ -18,6 +19,14 @@ function Navbar({ setIsOpen }) {
   const [showProfile, setShowProfile] = useState(false);
 
   const dropdownRef = useRef(null);
+
+   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/", { replace: true });
+  };
+let user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -77,11 +86,11 @@ function Navbar({ setIsOpen }) {
 
           <div className="hidden md:block text-left">
             <h4 className="font-semibold text-white">
-              Arunkumar
+              {user?.name}
             </h4>
 
             <p className="text-sm text-white">
-              Administrator
+              {user?.role}
             </p>
           </div>
 
@@ -108,11 +117,11 @@ function Navbar({ setIsOpen }) {
 
                 <div>
                   <h3 className="font-bold text-lg">
-                    Arunkumar
+                    {user?.name}
                   </h3>
 
                   <p className="text-sm text-blue-100">
-                    Administrator
+                    {user?.role}
                   </p>
                 </div>
 
@@ -134,7 +143,7 @@ function Navbar({ setIsOpen }) {
 
               {/* <Link
                 to="/admin/profile/edit"
-                className="flex items-center gap-3 px-5 py-3 hover:bg-gray-100 transition"
+                className="flex items-center gap-3 px-5 py-3 text-green-400 hover:bg-slate-500 transition"
               >
                 <FaUserEdit className="text-green-600" />
                 Edit Profile
@@ -150,13 +159,12 @@ function Navbar({ setIsOpen }) {
 
               <hr className="my-2 text-gray-600" />
 
-              <button
+              <button onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-5 py-3 hover:bg-red-700 hover:text-red-300 text-red-800 transition"
               >
                 <FaSignOutAlt />
                 Logout
               </button>
-
             </div>
 
           </div>

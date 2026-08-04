@@ -9,9 +9,16 @@ import {
   MdSettings,
   MdLogout,
 } from "react-icons/md";
+// import storage from "redux-persist/lib/storage";
 
+let userRole = JSON.parse(localStorage.getItem("user"))?.role;
+
+if (userRole !== null && userRole !== undefined) {
+  userRole = userRole.toLowerCase();
+}
+// console.log(storage);
 let menuItems = [];
-if (localStorage.getItem("userRole") === "admin") {
+if (userRole === "admin") {
   menuItems = [
     { title: "Dashboard", icon: <MdDashboard /> },
     { title: "Hotels", icon: <MdHotel /> },
@@ -23,7 +30,7 @@ if (localStorage.getItem("userRole") === "admin") {
     { title: "Settings", icon: <MdSettings /> },
   ];
 }
-else if (localStorage.getItem("userRole") === "Manager") {
+else if (userRole === "hotel") {
   menuItems = [
     { title: "Dashboard", icon: <MdDashboard /> },
     { title: "Hotels", icon: <MdHotel /> },
@@ -39,7 +46,13 @@ function Sidebar({ isOpen }) {
       ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
     >
       <div className="flex items-center justify-center h-20 border-b border-slate-700">
-        <h1 className="text-2xl font-bold text-blue-400">
+        <img
+          src="/HMS_PRODIGIT.png"
+          alt="HotelMS Logo"
+          className="w-16 h-16 object-contain"
+        />
+
+        <h1 className="ml-3 text-2xl font-bold text-blue-400">
           HotelMS
         </h1>
       </div>

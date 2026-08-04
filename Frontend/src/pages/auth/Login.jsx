@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../../redux/slices/authslice";
+
+import { login } from "../../redux/slices/authSlice";
 import {
   FaHotel,
   FaEnvelope,
@@ -57,29 +58,32 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       if (data.token) {
-        const dispatch = useDispatch();
-
         dispatch(
           login({
-            user: response.user,
-            token: response.token,
+            user: data.user,
+            token: data.token,
           })
         );
       }
-      console.log("Login successful:", data.user);
 
-      const role = data.user?.role?.toLowerCase();
-      console.log("User role:", role);
-      if (role === "admin") {
-        navigate("/admin");
-      } else if (role === "hotel") {
-        navigate("/hotel/dashboard");
-      } else if (role === "customer") {
-        navigate("/customer/dashboard");
-      } else {
-        // navigate("/");
-        console.error("Unknown user role:", role);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      console.log("Login successful:", data.user);
+      if (data.user.role) {
+        const role = data.user?.role?.toLowerCase();
+        console.log("User role:", role);
+        if (role === "admin") {
+          navigate("/admin");
+        } else if (role === "hotel") {
+          navigate("/hotel-manager");
+        } else if (role === "customer") {
+          navigate("/customer/dashboard");
+        } else {
+          // navigate("/");
+          console.error("Unknown user role:", role);
+        }
       }
+
     } catch (err) {
       console.error(err);
       setError("Backend server not connected");

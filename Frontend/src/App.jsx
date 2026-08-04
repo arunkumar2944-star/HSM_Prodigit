@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 // common 
 
 import Profile from "./pages/auth/profile";
@@ -26,6 +27,23 @@ import HMLayout from "./pages/hotel_manager/layout";
 import HMDashboard from "./pages/hotel_manager/hm_dashboard";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+
+  //   if (user && token) {
+  //     dispatch(
+  //       login({
+  //         user: JSON.parse(user),
+  //         token,
+  //       })
+  //     );
+  //   }
+  // }, [dispatch]);
+  });
+
   return (
     <BrowserRouter>
       <Routes>
