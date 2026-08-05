@@ -13,6 +13,7 @@ import ContactUs from "./pages/Landing/ContactUs";
 import AboutUs from "./pages/landing/AboutUs";
 import Hotel from "./pages/Landing/Hotels";
 
+
 // Authentication
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
@@ -56,6 +57,7 @@ function App() {
           <Route path="aboutus" element={<AboutUs />} />
 
           <Route path="hotels" element={<Hotel />} />
+          
         </Route>
 
         {/* Authentication */}
