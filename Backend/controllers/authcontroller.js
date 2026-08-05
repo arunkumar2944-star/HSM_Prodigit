@@ -141,7 +141,6 @@ exports.login = async (req, res) => {
 
 
 
-
             if (users.length > 0) {
 
 
@@ -171,10 +170,10 @@ exports.login = async (req, res) => {
 
                     user: {
 
-                        id: user.id,
-                        name: user.firstname,
-                        email: user.email,
-                        role: user.role
+                        id: user.UserID,
+                        name: user.FirstName,
+                        email: user.Email,
+                        role: user.Role
                     }
                 });
             }
