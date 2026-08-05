@@ -1,4 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+// common 
+
+import Profile from "./pages/auth/profile";
+import ChangePassword from "./pages/auth/changePassword";
+import EditProfile from "./pages/auth/edit-profile";
 // Landing Pages
 import HomeLayout from "./pages/Landing/HomeLayout";
 import Home from "./pages/Landing/Home";
@@ -11,7 +18,33 @@ import Hotel from "./pages/Landing/Hotels";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 
+// Admin
+import AdminLayout from "./pages/admin/layout";
+import AdminDashboard from "./pages/admin/adminDashboard";
+
+
+// Hotel Manager
+import HMLayout from "./pages/hotel_manager/layout";
+import HMDashboard from "./pages/hotel_manager/hm_dashboard";
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+
+  //   if (user && token) {
+  //     dispatch(
+  //       login({
+  //         user: JSON.parse(user),
+  //         token,
+  //       })
+  //     );
+  //   }
+  // }, [dispatch]);
+  });
+
   return (
     <BrowserRouter>
       <Routes>
@@ -27,9 +60,28 @@ function App() {
           
         </Route>
 
-         {/* Authentication */}
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="Profile" element={<Profile />} />
+          <Route path="edit-profile" element={<EditProfile />} />
+          <Route path="change-password" element={<ChangePassword />} />
+        </Route>
+        {/* Hotel Manager Routes */}
+        <Route path="/hotel-manager" element={<HMLayout />}>
+          <Route index element={<HMDashboard />} />
+          <Route path="Profile" element={<Profile />} />
+          <Route path="edit-profile" element={<EditProfile />} />
+          <Route path="change-password" element={<ChangePassword />} />
+        </Route>
+
+        {/* Default Routes */}
+        <Route path="*" element={<h1>404 Not Found</h1>} />
+
       </Routes>
     </BrowserRouter>
   );
