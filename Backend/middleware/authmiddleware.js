@@ -1,30 +1,38 @@
 const jwt = require("jsonwebtoken");
 
-const protect = (req, res, next) => {
-  let token;
+const protect = async (req, res, next) => {
+  try {
+    let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+    // Check Authorization header
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    }
 
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      req.user = decoded;
-
-      next();
-    } catch (error) {
+    // No token
+    if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Invalid Token",
+        message: "Access denied. No token provided.",
       });
     }
-  } else {
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Store decoded payload
+    req.user = decoded;
+
+    next();
+  } catch (error) {
+    console.error("JWT Error:", error.message);
+
     return res.status(401).json({
       success: false,
-      message: "No Token Found",
+      message: "Invalid or expired token.",
     });
   }
 };

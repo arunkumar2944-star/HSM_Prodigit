@@ -1,339 +1,151 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 
 const { createUser, findUserByEmail } = require("../models/User");
-
 
 // =================================================
 // CUSTOMER REGISTER
 // =================================================
 
 exports.register = async (req, res) => {
+  try {
+    const {
+      firstname,
+      lastname,
+      email,
+      phone,
+      password,
+      dateOfBirth,
+      gender,
+      address,
+      role,
+    } = req.body;
 
-    try {
+    const existingUser = await findUserByEmail(email);
 
-        const {
-            firstname,
-            lastname,
-            email,
-            phone,
-            password,
-            dateOfBirth,
-            gender,
-            address,
-            role
-        } = req.body;
-
-
-
-        const existingUser = await findUserByEmail(email);
-
-
-
-        if (existingUser) {
-
-            return res.status(400).json({
-
-                message: "Email already exists"
-
-            });
-
-        }
-
-
-
-        const passwordHash = await bcrypt.hash(password, 10);
-
-
-
-        const user = await createUser(
-
-            firstname,
-            lastname,
-            email,
-            phone,
-            passwordHash,
-            dateOfBirth,
-            gender,
-            address,
-            role
-
-        );
-
-
-
-        res.status(201).json({
-
-            message: "User Registered Successfully",
-
-            user: user
-
-        });
-
-
-
-    }
-    catch (error) {
-
-        console.log(error);
-
-
-        res.status(500).json({
-
-            message: error.message
-
-        });
-
-
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
     }
 
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = await createUser(
+      firstname,
+      lastname,
+      email,
+      phone,
+      passwordHash,
+      dateOfBirth,
+      gender,
+      address,
+      role,
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: "User Registered Successfully",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
-
-
-
-
 
 // =================================================
 // LOGIN
 // =================================================
 
-
 exports.login = async (req, res) => {
-
-
-    try {
-
-
-        const {
-            email,
-            password
-        } = req.body;
-
-
-
-        // ================= USER LOGIN =================
-
-
-        const userQuery = `
-
-        SELECT *
-
-        FROM users
-
-        WHERE email=?
-
-        `;
-
-
-
-        db.query(userQuery, [email], async (err, users) => {
-
-
-            if (err) {
-
-                return res.status(500).json({
-
-                    message: "Database error"
-
-                });
-
-            }
-
-
-
-            if (users.length > 0) {
-
-
-                const user = users[0];
-
-
-                console.log("USER DATA:", user);
-                if (!user.PasswordHash) {
-
-                    return res.status(500).json({
-                        message: "PasswordHash missing in users table"
-                    });
-                }
-                const passwordMatch = await bcrypt.compare(
-                    password,
-                    user.PasswordHash
-                );
-                if (!passwordMatch) {
-
-                    return res.status(401).json({
-                        message: "Invalid password"
-                    });
-                }
-                return res.json({
-
-                    message: "Login successful",
-
-                    user: {
-
-                        id: user.UserID,
-                        name: user.FirstName,
-                        email: user.Email,
-                        role: user.Role
-                    }
-                });
-            }
-
-            // ================= HOTEL LOGIN =================
-
-
-
-            const hotelQuery = `
-
-            SELECT *
-
-            FROM hotels
-
-            WHERE hotelEmail=?
-
-            `;
-
-
-
-            db.query(hotelQuery, [email], async (err, hotels) => {
-
-
-
-                if (err) {
-
-
-                    return res.status(500).json({
-
-                        message: "Database error"
-
-                    });
-
-
-                }
-
-
-
-
-
-                if (hotels.length === 0) {
-
-
-                    return res.status(401).json({
-
-                        message: "Email not found"
-
-                    });
-
-
-                }
-
-
-
-
-
-                const hotel = hotels[0];
-
-
-
-                console.log("HOTEL DATA:", hotel);
-
-
-
-                if (!hotel.password) {
-
-
-                    return res.status(500).json({
-
-                        message: "Hotel password missing"
-
-                    });
-
-
-                }
-
-
-
-
-
-                const passwordMatch = await bcrypt.compare(
-
-                    password,
-
-                    hotel.password
-
-                );
-
-
-
-
-
-                if (!passwordMatch) {
-
-
-                    return res.status(401).json({
-
-                        message: "Invalid password"
-
-                    });
-
-
-                }
-
-
-
-
-
-                return res.json({
-
-
-                    message: "Hotel Login successful",
-
-
-                    user: {
-
-
-                        id: hotel.id,
-
-                        name: hotel.hotelName,
-
-                        email: hotel.hotelEmail,
-
-                        role: hotel.role || "Manager"
-
-
-                    }
-
-
-                });
-
-
-
-            });
-
-
-
+  try {
+    const { email, password } = req.body;
+
+    const query = `
+      SELECT *
+      FROM users
+      WHERE Email = ?
+      LIMIT 1
+    `;
+
+    db.query(query, [email], async (err, results) => {
+      if (err) {
+        console.log(err);
+
+        return res.status(500).json({
+          success: false,
+          message: "Database error",
         });
+      }
 
-
-
-    }
-
-    catch (error) {
-
-
-        console.log(error);
-
-
-
-        res.status(500).json({
-
-            message: error.message
-
+      if (results.length === 0) {
+        return res.status(401).json({
+          success: false,
+          message: "Email not found",
         });
+      }
 
+      const user = results[0];
 
+      if (!user.PasswordHash) {
+        return res.status(500).json({
+          success: false,
+          message: "Password hash missing",
+        });
+      }
 
-    }
+      const passwordMatch = await bcrypt.compare(password, user.PasswordHash);
 
+      if (!passwordMatch) {
+        return res.status(401).json({
+          success: false,
+          message: "Invalid password",
+        });
+      }
 
+      const token = jwt.sign(
+        {
+          id: user.UserID,
+          email: user.Email,
+          role: user.Role,
+          hotel_id: user.hotel_id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: process.env.JWT_EXPIRES_IN || "7d",
+        },
+      );
 
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        token,
+        user: {
+          id: user.UserID,
+          firstName: user.FirstName,
+          lastName: user.LastName,
+          email: user.Email,
+          phone: user.Phone,
+          role: user.Role,
+          hotel_id: user.hotel_id,
+          profileImage: user.ProfileImage,
+          isActive: user.IsActive,
+        },
+      });
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };

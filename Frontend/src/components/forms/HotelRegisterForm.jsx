@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   FaHotel,
   FaEnvelope,
@@ -13,27 +14,19 @@ import {
   FaBuilding,
 } from "react-icons/fa";
 
-function HotelRegisterForm({
-  hotel,
-  handleChange,
-  handleImage,
-  handleSubmit,
-}) {
+function HotelRegisterForm({ hotel, handleChange, handleImage, handleSubmit }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      {/* ================= HOTEL INFORMATION ================= */}
 
-      {/* Hotel Information */}
       <div>
-
         <div className="flex items-center gap-3 mb-6">
           <FaBuilding className="text-amber-500 text-xl" />
-          <h3 className="text-xl font-bold text-gray-800">
-            Hotel Information
-          </h3>
+
+          <h3 className="text-xl font-bold text-gray-800">Hotel Information</h3>
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
-
           <Input
             icon={<FaHotel />}
             label="Hotel Name"
@@ -67,7 +60,7 @@ function HotelRegisterForm({
               Hotel Category
             </label>
 
-            <div className="flex items-center border rounded-xl px-4 h-14 focus-within:ring-2 focus-within:ring-amber-400">
+            <div className="flex items-center border rounded-xl px-4 h-14">
               <FaStar className="text-gray-400 mr-3" />
 
               <select
@@ -78,33 +71,34 @@ function HotelRegisterForm({
                 required
               >
                 <option value="">Select Category</option>
+
                 <option>1 Star</option>
+
                 <option>2 Star</option>
+
                 <option>3 Star</option>
+
                 <option>4 Star</option>
+
                 <option>5 Star</option>
+
                 <option>Luxury</option>
               </select>
             </div>
           </div>
-
         </div>
-
       </div>
 
-      {/* Owner */}
+      {/* ================= OWNER INFORMATION ================= */}
 
       <div>
-
         <div className="flex items-center gap-3 mb-6">
           <FaUserTie className="text-amber-500 text-xl" />
-          <h3 className="text-xl font-bold text-gray-800">
-            Owner Information
-          </h3>
+
+          <h3 className="text-xl font-bold text-gray-800">Owner Information</h3>
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
-
           <Input
             icon={<FaUserTie />}
             label="Owner Name"
@@ -123,46 +117,37 @@ function HotelRegisterForm({
             placeholder="owner@example.com"
             onChange={handleChange}
           />
-
         </div>
-
       </div>
 
-      {/* Address */}
+      {/* ================= ADDRESS ================= */}
 
       <div>
-
         <div className="flex items-center gap-3 mb-6">
           <FaMapMarkerAlt className="text-amber-500 text-xl" />
-          <h3 className="text-xl font-bold text-gray-800">
-            Address
-          </h3>
+
+          <h3 className="text-xl font-bold text-gray-800">Address</h3>
         </div>
 
-        <div>
+        <label className="block mb-2 text-sm font-semibold text-gray-700">
+          Hotel Address
+        </label>
 
-          <label className="block mb-2 text-sm font-semibold text-gray-700">
-            Hotel Address
-          </label>
+        <div className="flex border rounded-xl px-4 py-3">
+          <FaMapMarkerAlt className="text-gray-400 mt-1 mr-3" />
 
-          <div className="flex border rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-amber-400">
-            <FaMapMarkerAlt className="text-gray-400 mt-1 mr-3" />
-
-            <textarea
-              rows="4"
-              name="address"
-              value={hotel.address}
-              onChange={handleChange}
-              placeholder="Enter complete hotel address"
-              className="w-full resize-none outline-none"
-              required
-            />
-          </div>
-
+          <textarea
+            rows="4"
+            name="address"
+            value={hotel.address}
+            onChange={handleChange}
+            placeholder="Enter hotel address"
+            className="w-full outline-none"
+            required
+          />
         </div>
 
         <div className="grid md:grid-cols-3 gap-5 mt-5">
-
           <Input
             icon={<FaCity />}
             label="City"
@@ -186,62 +171,79 @@ function HotelRegisterForm({
             value={hotel.pincode}
             onChange={handleChange}
           />
-
         </div>
-
       </div>
 
-      {/* Logo */}
+      {/* ================= LOGO ================= */}
 
       <div>
-
         <div className="flex items-center gap-3 mb-6">
           <FaImage className="text-amber-500 text-xl" />
-          <h3 className="text-xl font-bold text-gray-800">
-            Hotel Logo
-          </h3>
+
+          <h3 className="text-xl font-bold text-gray-800">Hotel Logo</h3>
         </div>
 
-        <label className="border-2 border-dashed rounded-xl p-8 flex justify-center cursor-pointer hover:border-amber-500 transition">
-
+        <label className="border-2 border-dashed rounded-xl p-8 flex justify-center cursor-pointer hover:border-amber-500">
           <div className="text-center">
-
             <FaImage className="mx-auto text-5xl text-amber-500 mb-3" />
 
-            <p className="font-medium text-gray-700">
-              Click to Upload Hotel Logo
-            </p>
+            <p className="font-medium text-gray-700">Upload Hotel Logo</p>
 
-            <p className="text-sm text-gray-400 mt-1">
-              JPG, PNG or JPEG
-            </p>
-
+            <p className="text-sm text-gray-400">JPG / PNG / JPEG</p>
           </div>
 
           <input
             type="file"
-            className="hidden"
             accept="image/*"
+            className="hidden"
             onChange={handleImage}
           />
-
         </label>
-
       </div>
 
-      {/* Password */}
+      {/* ================= MANAGER INFORMATION ================= */}
 
       <div>
-
         <div className="flex items-center gap-3 mb-6">
-          <FaLock className="text-amber-500 text-xl" />
+          <FaUserTie className="text-amber-500 text-xl" />
+
           <h3 className="text-xl font-bold text-gray-800">
-            Security
+            Manager Information
           </h3>
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
+          <Input
+            icon={<FaUserTie />}
+            label="Manager Name"
+            name="managerName"
+            value={hotel.managerName}
+            placeholder="Manager Full Name"
+            onChange={handleChange}
+          />
 
+          <Input
+            icon={<FaEnvelope />}
+            label="Manager Email"
+            type="email"
+            name="managerEmail"
+            value={hotel.managerEmail}
+            placeholder="manager@example.com"
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+
+      {/* ================= PASSWORD ================= */}
+
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <FaLock className="text-amber-500 text-xl" />
+
+          <h3 className="text-xl font-bold text-gray-800">Security</h3>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-5">
           <Input
             icon={<FaLock />}
             label="Password"
@@ -259,12 +261,10 @@ function HotelRegisterForm({
             value={hotel.confirmPassword}
             onChange={handleChange}
           />
-
         </div>
-
       </div>
 
-      {/* Terms */}
+      {/* ================= TERMS ================= */}
 
       <div className="flex items-start gap-3">
         <input
@@ -274,35 +274,52 @@ function HotelRegisterForm({
           required
         />
 
-        <label htmlFor="terms" className="text-gray-600">
-          I agree to the
-          <span className="text-amber-500 font-semibold">
-            {" "}Terms & Conditions
-          </span>
-          {" "}and Privacy Policy.
+        <label htmlFor="terms" className="text-gray-600 leading-6">
+          I agree to the{" "}
+          <Link
+            to="/terms"
+            target="_blank"
+            className="font-semibold text-amber-600 hover:text-amber-700 hover:underline"
+          >
+            Terms & Conditions
+          </Link>{" "}
+          and{" "}
+          <Link
+            to="/privacy"
+            target="_blank"
+            className="font-semibold text-amber-600 hover:text-amber-700 hover:underline"
+          >
+            Privacy Policy
+          </Link>
+          .
         </label>
       </div>
 
-      {/* Button */}
-
       <button
         type="submit"
-        className="w-full h-14 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-lg shadow-lg hover:shadow-xl hover:from-amber-600 hover:to-orange-600 transition"
+        className="w-full h-14 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-lg"
       >
         Register Hotel
       </button>
-
     </form>
   );
 }
 
+// ================= REUSABLE INPUT =================
+
 function Input({
   icon,
+
   label,
+
   type = "text",
+
   name,
+
   value,
+
   placeholder,
+
   onChange,
 }) {
   return (
@@ -311,10 +328,8 @@ function Input({
         {label}
       </label>
 
-      <div className="flex items-center border rounded-xl px-4 h-14 focus-within:ring-2 focus-within:ring-amber-400">
-        <span className="text-gray-400 mr-3">
-          {icon}
-        </span>
+      <div className="flex items-center border rounded-xl px-4 h-14">
+        <span className="text-gray-400 mr-3">{icon}</span>
 
         <input
           type={type}
