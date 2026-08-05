@@ -1,3 +1,7 @@
+import user from "../models/user.js";
+const db = require("../config/db");
+
+
 exports.register = async (userData) => {
     // Business logic
 
@@ -10,4 +14,13 @@ exports.register = async (userData) => {
     // Hash password...
 
     return await authModel.createUser(userData);
+};
+
+exports.getUserList = async () => {
+    return await authModel.findUsers();
+};
+
+module.exports = {
+    register,
+    getUserList,
 };

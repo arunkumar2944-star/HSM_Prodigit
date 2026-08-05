@@ -24,8 +24,6 @@ exports.register = async (req, res) => {
             role
         } = req.body;
 
-
-
         const existingUser = await findUserByEmail(email);
 
 
@@ -69,9 +67,6 @@ exports.register = async (req, res) => {
             user: user
 
         });
-
-
-
     }
     catch (error) {
 
@@ -337,3 +332,17 @@ exports.login = async (req, res) => {
 
 
 };
+
+
+exports.getUsers = async (req, res) => {
+    const sql = `
+        SELECT *
+        FROM Users
+        ORDER BY UserID
+    `;
+
+    const [rows] = await db.promise().query(sql);
+
+    return res.status(200).json({ users: rows });
+};
+    

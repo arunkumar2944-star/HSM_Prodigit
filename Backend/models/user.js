@@ -63,9 +63,23 @@ const findUserByEmail = async(email)=>{
     return rows[0];
 
 };
+
+
+const getUsersList = async(email)=>{
+
+    const [rows] = await db.promise().query(
+        `
+        SELECT * FROM users
+       `
+    );
+
+    return rows;
+
+};
 module.exports = {
   createUser,
   findUserByEmail,
+  getUsersList,
 
 };
 
