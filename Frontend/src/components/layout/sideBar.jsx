@@ -30,7 +30,7 @@ if (userRole === "admin") {
     { title: "Settings", icon: <MdSettings /> },
   ];
 }
-else if (userRole === "hotel") {
+else if (userRole === "hotelmanager") {
   menuItems = [
     { title: "Dashboard", icon: <MdDashboard /> },
     { title: "Hotels", icon: <MdHotel /> },
