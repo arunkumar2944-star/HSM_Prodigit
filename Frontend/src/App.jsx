@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useDispatch,useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 // Common
@@ -21,6 +21,7 @@ import Signup from "./pages/auth/Signup";
 // Admin
 import AdminLayout from "./pages/admin/layout";
 import AdminDashboard from "./pages/admin/adminDashboard";
+import Hotels from "./pages/Admin/Hotels";
 
 // Hotel Manager
 import HMLayout from "./pages/hotel_manager/layout";
@@ -52,7 +53,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* Landing Pages */}
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<Home />} />
@@ -75,6 +75,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="edit-profile" element={<EditProfile />} />
           <Route path="change-password" element={<ChangePassword />} />
+          <Route path="hotels" element={<Hotels />} />
         </Route>
 
         {/* Hotel Manager */}
@@ -87,7 +88,6 @@ function App() {
 
         {/* 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
-
       </Routes>
     </BrowserRouter>
   );
