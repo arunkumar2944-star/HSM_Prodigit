@@ -149,3 +149,31 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+exports.getUsers = async (req, res) => {
+  try {
+    const query = `
+      SELECT *
+      FROM users
+    `;
+    db.query(query, (err, results) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          message: "Database error",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        users: results,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
