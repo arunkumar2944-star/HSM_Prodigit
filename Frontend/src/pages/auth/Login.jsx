@@ -3,16 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { login } from "../../redux/slices/authSlice";
-import {
-  FaHotel,
-  FaEnvelope,
-  FaLock,
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa";
+import { FaHotel, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -30,6 +25,8 @@ function Login() {
     }));
   };
 
+  // const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,75 +34,79 @@ function Login() {
     setError("");
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/login",
-        {
-          method: "POST",
-          body: JSON.stringify(formData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
         setError(data.message || "Invalid email or password");
+
         return;
       }
 
-      localStorage.setItem("user", JSON.stringify(data.user));
+      console.log("LOGIN DATA:", data.user);
 
-      if (data.token) {
-        dispatch(
-          login({
-            user: data.user,
-            token: data.token,
-          })
-        );
-      }
+      // Store user
 
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.token);
-      console.log("Login successful:", data.user);
-      if (data.user.role) {
-        const role = data.user?.role?.toLowerCase();
-        console.log("User role:", role);
-        if (role === "admin") {
-          navigate("/admin");
-        } else if (role === "hotel") {
-          navigate("/hotel-manager");
-        } else if (role === "customer") {
-          navigate("/customer/dashboard");
-        } else {
-          // navigate("/");
-          console.error("Unknown user role:", role);
-        }
-      }
 
-    } catch (err) {
-      console.error(err);
+      localStorage.setItem("token", data.token || "");
+
+      // Redux
+
+      dispatch(
+        login({
+          user: data.user,
+
+          token: data.token || "",
+        }),
+      );
+
+      // Role Based Navigation
+
+      const role = data.user.role.toLowerCase();
+
+      console.log("ROLE:", role);
+
+      if (role === "admin") {
+        navigate("/admin");
+      } else if (role === "hotelmanager") {
+        navigate("/hotel-manager");
+      } else if (role === "customer") {
+        navigate("/customer/dashboard");
+      } else if (role === "receptionist") {
+        navigate("/receptionist");
+      } else {
+        console.error("Unknown role:", role);
+
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+
       setError("Backend server not connected");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 flex items-center justify-center px-6 py-12">
       <div className="max-w-6xl w-full grid lg:grid-cols-2 bg-white rounded-3xl shadow-2xl overflow-hidden">
-
         {/* Left Section */}
         <div className="hidden lg:flex flex-col justify-center bg-gradient-to-br from-amber-500 to-orange-600 text-white p-14">
-
           <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center mb-8">
             <FaHotel size={42} />
           </div>
 
-          <h1 className="text-5xl font-bold leading-tight">
-            Welcome Back
-          </h1>
+          <h1 className="text-5xl font-bold leading-tight">Welcome Back</h1>
 
           <p className="mt-6 text-lg text-amber-100 leading-8">
             Sign in to access your Hotel Management dashboard, manage bookings,
@@ -117,26 +118,18 @@ function Login() {
             <div>✔ Easy Booking Management</div>
             <div>✔ 24/7 Customer Support</div>
           </div>
-
         </div>
 
         {/* Right Section */}
         <div className="p-8 md:p-14">
-
           <div className="text-center mb-10">
-
             <div className="w-20 h-20 mx-auto rounded-full bg-amber-100 flex items-center justify-center text-amber-500">
               <FaHotel size={34} />
             </div>
 
-            <h2 className="text-4xl font-bold text-gray-800 mt-6">
-              Login
-            </h2>
+            <h2 className="text-4xl font-bold text-gray-800 mt-6">Login</h2>
 
-            <p className="text-gray-500 mt-2">
-              Sign in to your account
-            </p>
-
+            <p className="text-gray-500 mt-2">Sign in to your account</p>
           </div>
 
           {error && (
@@ -146,7 +139,6 @@ function Login() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-
             {/* Email */}
             <div>
               <label className="block mb-2 font-semibold text-gray-700">
@@ -175,7 +167,6 @@ function Login() {
               </label>
 
               <div className="flex items-center border rounded-xl px-4 h-14 focus-within:ring-2 focus-within:ring-amber-400">
-
                 <FaLock className="text-gray-400 mr-3" />
 
                 <input
@@ -199,12 +190,10 @@ function Login() {
                     <FaEye size={18} />
                   )}
                 </button>
-
               </div>
             </div>
 
             <div className="flex justify-between items-center text-sm">
-
               <label className="flex items-center gap-2">
                 <input type="checkbox" />
                 Remember me
@@ -216,7 +205,6 @@ function Login() {
               >
                 Forgot Password?
               </Link>
-
             </div>
 
             <button
@@ -226,24 +214,18 @@ function Login() {
             >
               {loading ? "Signing In..." : "Login"}
             </button>
-
           </form>
 
           <div className="mt-8 text-center text-gray-500">
-
             Don't have an account?
-
             <Link
               to="/signup"
               className="ml-2 text-amber-500 font-semibold hover:text-amber-600"
             >
               Create Account
             </Link>
-
           </div>
-
         </div>
-
       </div>
     </div>
   );
