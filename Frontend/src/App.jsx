@@ -19,11 +19,11 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 
 // Admin
-import AdminLayout from "./pages/admin/layout";
+import AdminLayout from "./Layouts/AdminLayout";
 import AdminDashboard from "./pages/admin/adminDashboard";
 import Hotels from "./pages/admin/Hotels";
 import Users from "./pages/admin/Users";
-import AdminSettings from "./pages/admin/AdminSettings";
+// import AdminSettings from "./pages/admin/AdminSettings";
 
 // Hotel Manager
 import HMLayout from "./pages/hotel_manager/layout";
@@ -97,7 +97,7 @@ function App() {
 
           <Route path="users" element={<Users />} />
 
-          <Route path="settings" element={<AdminSettings />} />
+          {/* <Route path="settings" element={<AdminSettings />} /> */}
         </Route>
 
         {/* =========================

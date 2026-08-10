@@ -77,7 +77,7 @@ function Login() {
       console.log("ROLE:", role);
 
       if (role === "admin") {
-        navigate("/admin");
+        navigate(" /admin");
       } else if (role === "hotelmanager") {
         navigate("/hotel-manager");
       } else if (role === "customer") {
