@@ -26,6 +26,8 @@ import AdminDashboard from "./pages/admin/adminDashboard";
 // Hotel Manager
 import HMLayout from "./pages/hotel_manager/layout";
 import HMDashboard from "./pages/hotel_manager/hm_dashboard";
+import CustomerLayout from "./pages/customer/Layout";
+import CustomerDashboard from "./pages/customer/dashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -58,6 +60,7 @@ function App() {
 
           <Route path="hotels" element={<Hotel />} />
           
+          
         </Route>
 
         {/* Authentication */}
@@ -78,6 +81,13 @@ function App() {
           <Route path="edit-profile" element={<EditProfile />} />
           <Route path="change-password" element={<ChangePassword />} />
         </Route>
+        <Route path="/customer" element={<CustomerLayout />}>
+  <Route path="dashboard" element={<CustomerDashboard />} />
+
+  <Route path="profile" element={<Profile />} />
+  <Route path="edit-profile" element={<EditProfile />} />
+  <Route path="change-password" element={<ChangePassword />} />
+</Route>
 
         {/* Default Routes */}
         <Route path="*" element={<h1>404 Not Found</h1>} />
