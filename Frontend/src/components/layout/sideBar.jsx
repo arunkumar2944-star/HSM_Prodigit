@@ -1,86 +1,76 @@
 import {
-  MdDashboard,
   MdHotel,
   MdBedroomParent,
   MdPeople,
   MdBookOnline,
   MdPayments,
-  MdBarChart,
   MdSettings,
+  MdLightMode,
+  MdDarkMode,
+  MdDashboard,
   MdLogout,
 } from "react-icons/md";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import logo from "../../../public/HMS_PRODIGIT64.png";
+import { logout } from "../../redux/slices/authSlice";
 
-// Get logged user role
+// ==========================================
+// GET LOGGED USER ROLE
+// ==========================================
 
-let user = JSON.parse(localStorage.getItem("user"));
+let user = null;
+
+try {
+  user = JSON.parse(localStorage.getItem("user"));
+} catch (error) {
+  console.log("User data error:", error);
+}
 
 let userRole = user?.role || user?.Role || "";
 
-userRole = userRole.toLowerCase();
+userRole = String(userRole).toLowerCase();
 
 let menuItems = [];
 
-// =========================
+// ==========================================
 // ADMIN MENU
-// =========================
+// ==========================================
 
 if (userRole === "admin") {
   menuItems = [
-    // {
-    //   title: "Dashboard",
-    //   icon: <MdDashboard />,
-    //   path: "/admin/dashboard",
-    // },
-
+    {
+      title: "Dashboard",
+      icon: <MdDashboard />,
+      path: "/admin",
+    },
     {
       title: "Hotels",
       icon: <MdHotel />,
       path: "/admin/hotels",
     },
-
-    // {
-    //   title: "Rooms",
-    //   icon: <MdBedroomParent />,
-    //   path: "/admin/rooms",
-    // },
-
-    // {
-    //   title: "Bookings",
-    //   icon: <MdBookOnline />,
-    //   path: "/admin/bookings",
-    // },
-
     {
       title: "Customers",
       icon: <MdPeople />,
       path: "/admin/users",
     },
-
-    {
-      title: "Payments",
-      icon: <MdPayments />,
-      path: "/admin/payments",
-    },
-
     // {
-    //   title: "Reports",
-    //   icon: <MdBarChart />,
-    //   path: "/admin/reports",
+    //   title: "Payments",
+    //   icon: <MdPayments />,
+    //   path: "/admin/payments",
     // },
-
-    {
-      title: "Settings",
-      icon: <MdSettings />,
-      path: "/admin/settings",
-    },
+    //   {
+    //     title: "Settings",
+    //     icon: <MdSettings />,
+    //     path: "/admin/settings",
+    //   },
   ];
 }
 
-// =========================
+// ==========================================
 // HOTEL MANAGER MENU
-// =========================
+// ==========================================
 else if (userRole === "hotelmanager" || userRole === "manager") {
   menuItems = [
     {
@@ -88,19 +78,16 @@ else if (userRole === "hotelmanager" || userRole === "manager") {
       icon: <MdDashboard />,
       path: "/manager/dashboard",
     },
-
     {
       title: "Rooms",
       icon: <MdBedroomParent />,
       path: "/manager/rooms",
     },
-
     {
       title: "Bookings",
       icon: <MdBookOnline />,
       path: "/manager/bookings",
     },
-
     {
       title: "Receptionists",
       icon: <MdPeople />,
@@ -109,9 +96,9 @@ else if (userRole === "hotelmanager" || userRole === "manager") {
   ];
 }
 
-// =========================
+// ==========================================
 // RECEPTIONIST MENU
-// =========================
+// ==========================================
 else if (userRole === "receptionist") {
   menuItems = [
     {
@@ -119,19 +106,16 @@ else if (userRole === "receptionist") {
       icon: <MdDashboard />,
       path: "/reception/dashboard",
     },
-
     {
       title: "Bookings",
       icon: <MdBookOnline />,
       path: "/reception/bookings",
     },
-
     {
       title: "Customers",
       icon: <MdPeople />,
       path: "/reception/customers",
     },
-
     {
       title: "Payments",
       icon: <MdPayments />,
@@ -140,31 +124,103 @@ else if (userRole === "receptionist") {
   ];
 }
 
+// ==========================================
+// SIDEBAR
+// ==========================================
+
 function Sidebar({ isOpen }) {
-  const navigate = useNavigate();
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("adminTheme") || "light";
+  });
 
-  const logout = () => {
-    localStorage.removeItem("token");
+  // ==========================================
+  // APPLY THEME
+  // ==========================================
 
-    localStorage.removeItem("user");
+  useEffect(() => {
+    const root = document.documentElement;
 
-    navigate("/login");
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    localStorage.setItem("adminTheme", theme);
+  }, [theme]);
+
+  // ==========================================
+  // CHANGE THEME
+  // ==========================================
+
+  const toggleTheme = () => {
+    setTheme((currentTheme) => {
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+      return newTheme;
+    });
   };
 
   return (
     <aside
-      className={`fixed top-0 left-0 z-40 h-screen w-64 bg-slate-900 text-white transition-transform duration-300
-${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+      className={`
+        fixed
+        top-0
+        left-0
+        z-40
+        h-screen
+        w-64
+
+        bg-white
+        dark:bg-gray-900
+
+        text-gray-900
+        dark:text-gray-100
+
+        border-r
+        border-gray-200
+        dark:border-gray-700
+
+        transition-transform
+        duration-300
+
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+
+        lg:translate-x-0
+      `}
     >
-      <div className="flex items-center justify-center h-20 border-b border-slate-700">
+      {/* ==========================================
+          LOGO
+      ========================================== */}
+
+      <div
+        className="
+    h-20
+    flex
+    items-center
+    gap-3
+    px-5
+    border-b
+    border-gray-200
+    dark:border-gray-700
+  "
+      >
         <img
-          src="/HMS_PRODIGIT.png"
+          src={logo}
           alt="HotelMS Logo"
-          className="w-16 h-16 object-contain"
+          className="
+      w-10
+      h-10
+      object-contain
+      rounded-lg
+    "
         />
 
-        <h1 className="ml-3 text-2xl font-bold text-blue-400">HotelMS</h1>
+        <h1 className="text-2xl font-bold text-blue-500">HotelMS</h1>
       </div>
+      {/* ==========================================
+          MENU
+      ========================================== */}
 
       <nav className="mt-6">
         {menuItems.map((item, index) => (
@@ -173,31 +229,85 @@ ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
             to={item.path}
             className={({ isActive }) =>
               `
-flex w-full items-center gap-4 px-6 py-3 text-left transition
-hover:bg-blue-600 hover:text-white
+              flex
+              w-full
+              items-center
+              gap-4
+              px-6
+              py-3
+              text-left
+              transition
 
-${isActive ? "bg-blue-600" : ""}
+              ${
+                isActive
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-700 dark:text-gray-200"
+              }
 
-`
+              hover:bg-blue-700
+              dark:hover:bg-blue-700
+              hover:text-white
+              `
             }
           >
-            <span className="text-2xl">{item.icon}</span>
+            <span className="text-xl">{item.icon}</span>
 
             <span>{item.title}</span>
           </NavLink>
         ))}
       </nav>
 
-      <div className="absolute bottom-0 w-full border-t border-slate-700">
+      {/* ==========================================
+          THEME BUTTON
+      ========================================== */}
+
+      <div
+        className="
+          absolute
+          bottom-0
+          left-0
+          w-full
+
+          border-t
+          border-gray-200
+          dark:border-gray-700
+
+          bg-white
+          dark:bg-gray-900
+        "
+      >
         <button
-          onClick={logout}
+          type="button"
+          onClick={toggleTheme}
           className="
-flex w-full items-center gap-4 px-6 py-4
-hover:bg-red-500
-"
+            flex
+            w-full
+            items-center
+            gap-4
+            px-6
+            py-4
+            text-left
+
+            text-gray-700
+            dark:text-gray-200
+
+            hover:bg-blue-600
+            hover:text-white
+
+            dark:hover:bg-blue-700
+
+            transition
+          "
         >
-          <MdLogout size={24} />
-          Logout
+          {theme === "dark" ? (
+            <MdLightMode className="text-xl text-yellow-400" />
+          ) : (
+            <MdDarkMode className="text-xl text-indigo-600" />
+          )}
+
+          <span className="font-medium">
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </span>
         </button>
       </div>
     </aside>
