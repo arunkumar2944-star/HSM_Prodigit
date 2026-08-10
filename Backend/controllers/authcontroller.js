@@ -7,7 +7,6 @@ const { createUser, findUserByEmail } = require("../models/User");
 // =================================================
 // CUSTOMER REGISTER
 // =================================================
-
 exports.register = async (req, res) => {
   try {
     const {
@@ -63,7 +62,6 @@ exports.register = async (req, res) => {
 // =================================================
 // LOGIN
 // =================================================
-
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -77,8 +75,6 @@ exports.login = async (req, res) => {
 
     db.query(query, [email], async (err, results) => {
       if (err) {
-        console.log(err);
-
         return res.status(500).json({
           success: false,
           message: "Database error",
@@ -94,13 +90,6 @@ exports.login = async (req, res) => {
 
       const user = results[0];
 
-      if (!user.PasswordHash) {
-        return res.status(500).json({
-          success: false,
-          message: "Password hash missing",
-        });
-      }
-
       const passwordMatch = await bcrypt.compare(password, user.PasswordHash);
 
       if (!passwordMatch) {
@@ -110,16 +99,51 @@ exports.login = async (req, res) => {
         });
       }
 
+      // ===========================
+      // CHECK HOTEL STATUS
+      // ===========================
+
+      const userRole = user.Role || "";
+
+      if (userRole === "HotelManager" || userRole === "Manager") {
+        const [hotel] = await db.promise().query(
+          `
+          SELECT status
+          FROM hotels
+          WHERE id = ?
+          `,
+          [user.hotel_id],
+        );
+
+        if (hotel.length === 0) {
+          return res.status(404).json({
+            success: false,
+            message: "Hotel not found",
+          });
+        }
+
+        if (hotel[0].status !== "Approved") {
+          return res.status(403).json({
+            success: false,
+            message: `Your hotel registration is ${hotel[0].status}. Please contact Admin.`,
+          });
+        }
+      }
+
+      // ===========================
+      // CREATE TOKEN
+      // ===========================
+
       const token = jwt.sign(
         {
           id: user.UserID,
           email: user.Email,
-          role: user.Role,
-          hotel_id: user.hotel_id,
+          role: userRole,
+          hotel_id: user.hotel_id || null,
         },
         process.env.JWT_SECRET,
         {
-          expiresIn: process.env.JWT_EXPIRES_IN || "7d",
+          expiresIn: "7d",
         },
       );
 
@@ -133,19 +157,54 @@ exports.login = async (req, res) => {
           lastName: user.LastName,
           email: user.Email,
           phone: user.Phone,
-          role: user.Role,
-          hotel_id: user.hotel_id,
+          role: userRole,
+          hotel_id: user.hotel_id || null,
           profileImage: user.ProfileImage,
           isActive: user.IsActive,
         },
       });
     });
   } catch (error) {
-    console.log(error);
-
     return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
+};
+// =================================================
+// GET ALL USERS
+// =================================================
+exports.getUsers = (req, res) => {
+  const query = `
+    SELECT
+      UserID,
+      FirstName,
+      LastName,
+      Email,
+      Phone,
+      Role,
+      hotel_id,
+      ProfileImage,
+      IsActive,
+      CreatedAt
+    FROM users
+    ORDER BY UserID DESC
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.log(err);
+
+      return res.status(500).json({
+        success: false,
+        message: "Database error",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      count: results.length,
+      users: results,
+    });
+  });
 };

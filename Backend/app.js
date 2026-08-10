@@ -7,6 +7,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authrout");
 const hotelRoutes = require("./routes/hotelRoutes");
 const adminRoutes = require("./routes/adminRouts");
+const userRoutes = require("./routes/userRoutes");
 
 // Database
 const db = require("./config/db");
@@ -30,6 +31,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/hotel", hotelRoutes);
 
 app.use("/api/admin", adminRoutes);
+
+app.use("/api/users", userRoutes);
 
 // ===============================
 // TEST API

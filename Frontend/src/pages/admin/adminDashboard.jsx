@@ -1,10 +1,8 @@
-import AdminLayout from "./layout";
 import DashboardStats from "../../components/Dashboard/DashboardStats";
 
 function AdminDashboard() {
   return (
-    <div className="space-y-8">
-
+    <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-800">
           Welcome Back, Admin 👋
@@ -16,9 +14,7 @@ function AdminDashboard() {
       </div>
 
       <DashboardStats />
-
     </div>
-
   );
 }
 

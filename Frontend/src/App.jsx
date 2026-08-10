@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 // Common
@@ -21,7 +21,9 @@ import Signup from "./pages/auth/Signup";
 // Admin
 import AdminLayout from "./pages/admin/layout";
 import AdminDashboard from "./pages/admin/adminDashboard";
-import Hotels from "./pages/Admin/Hotels";
+import Hotels from "./pages/admin/Hotels";
+import Users from "./pages/admin/Users";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 // Hotel Manager
 import HMLayout from "./pages/hotel_manager/layout";
@@ -53,7 +55,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Landing Pages */}
+        {/* =========================
+            LANDING PAGES
+        ========================== */}
+
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<Home />} />
           <Route path="contactus" element={<ContactUs />} />
@@ -61,33 +66,64 @@ function App() {
           <Route path="hotels" element={<Hotel />} />
         </Route>
 
-        {/* Authentication */}
+        {/* =========================
+            AUTHENTICATION
+        ========================== */}
+
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Terms & Privacy */}
+        {/* =========================
+            TERMS & PRIVACY
+        ========================== */}
+
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
 
-        {/* Admin */}
+        {/* =========================
+            ADMIN
+        ========================== */}
+
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
+
           <Route path="profile" element={<Profile />} />
+
           <Route path="edit-profile" element={<EditProfile />} />
+
           <Route path="change-password" element={<ChangePassword />} />
+
           <Route path="hotels" element={<Hotels />} />
+
+          <Route path="users" element={<Users />} />
+
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
 
-        {/* Hotel Manager */}
+        {/* =========================
+            HOTEL MANAGER
+        ========================== */}
+
         <Route path="/hotel-manager" element={<HMLayout />}>
           <Route index element={<HMDashboard />} />
+
           <Route path="profile" element={<Profile />} />
+
           <Route path="edit-profile" element={<EditProfile />} />
+
           <Route path="change-password" element={<ChangePassword />} />
         </Route>
 
-        {/* 404 */}
-        <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+        {/* =========================
+            404
+        ========================== */}
+
+        <Route
+          path="*"
+          element={
+            <h1 className="text-3xl font-bold p-10">404 - Page Not Found</h1>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

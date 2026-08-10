@@ -138,7 +138,7 @@ function Login() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" >
             {/* Email */}
             <div>
               <label className="block mb-2 font-semibold text-gray-700">

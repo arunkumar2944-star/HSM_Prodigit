@@ -9,7 +9,7 @@ function AdminLayout() {
   return (
     <div className="bg-slate-100 min-h-screen">
       <Sidebar isOpen={isOpen} />
-
+    
       <div className="lg:ml-64">
         <Navbar setIsOpen={setIsOpen} />
 

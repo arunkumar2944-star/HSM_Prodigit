@@ -28,11 +28,11 @@ let menuItems = [];
 
 if (userRole === "admin") {
   menuItems = [
-    {
-      title: "Dashboard",
-      icon: <MdDashboard />,
-      path: "/admin/dashboard",
-    },
+    // {
+    //   title: "Dashboard",
+    //   icon: <MdDashboard />,
+    //   path: "/admin/dashboard",
+    // },
 
     {
       title: "Hotels",
@@ -40,17 +40,17 @@ if (userRole === "admin") {
       path: "/admin/hotels",
     },
 
-    {
-      title: "Rooms",
-      icon: <MdBedroomParent />,
-      path: "/admin/rooms",
-    },
+    // {
+    //   title: "Rooms",
+    //   icon: <MdBedroomParent />,
+    //   path: "/admin/rooms",
+    // },
 
-    {
-      title: "Bookings",
-      icon: <MdBookOnline />,
-      path: "/admin/bookings",
-    },
+    // {
+    //   title: "Bookings",
+    //   icon: <MdBookOnline />,
+    //   path: "/admin/bookings",
+    // },
 
     {
       title: "Customers",
@@ -64,11 +64,11 @@ if (userRole === "admin") {
       path: "/admin/payments",
     },
 
-    {
-      title: "Reports",
-      icon: <MdBarChart />,
-      path: "/admin/reports",
-    },
+    // {
+    //   title: "Reports",
+    //   icon: <MdBarChart />,
+    //   path: "/admin/reports",
+    // },
 
     {
       title: "Settings",
