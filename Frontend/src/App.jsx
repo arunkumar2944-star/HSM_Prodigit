@@ -28,6 +28,8 @@ import Users from "./pages/admin/Users";
 // Hotel Manager
 import HMLayout from "./pages/hotel_manager/layout";
 import HMDashboard from "./pages/hotel_manager/hm_dashboard";
+import CustomerLayout from "./pages/customer/Layout";
+import CustomerDashboard from "./pages/customer/dashboard";
 
 // Terms & Privacy
 import TermsAndConditions from "./components/common/TermsAndConditions";
@@ -64,6 +66,7 @@ function App() {
           <Route path="contactus" element={<ContactUs />} />
           <Route path="aboutus" element={<AboutUs />} />
           <Route path="hotels" element={<Hotel />} />
+
         </Route>
 
         {/* =========================
@@ -113,6 +116,7 @@ function App() {
 
           <Route path="change-password" element={<ChangePassword />} />
         </Route>
+        
 
         {/* =========================
             404
