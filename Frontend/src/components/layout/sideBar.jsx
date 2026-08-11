@@ -227,31 +227,31 @@ function Sidebar({ isOpen }) {
           <NavLink
             key={index}
             to={item.path}
+            end={item.path === "/admin"}
             className={({ isActive }) =>
               `
-              flex
-              w-full
-              items-center
-              gap-4
-              px-6
-              py-3
-              text-left
-              transition
+        flex
+        w-full
+        items-center
+        gap-4
+        px-6
+        py-3
+        text-left
+        transition
 
-              ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 dark:text-gray-200"
-              }
+        ${
+          isActive
+            ? "bg-blue-600 text-white"
+            : "text-gray-700 dark:text-gray-200"
+        }
 
-              hover:bg-blue-700
-              dark:hover:bg-blue-700
-              hover:text-white
-              `
+        hover:bg-blue-700
+        dark:hover:bg-blue-700
+        hover:text-white
+        `
             }
           >
             <span className="text-xl">{item.icon}</span>
-
             <span>{item.title}</span>
           </NavLink>
         ))}
